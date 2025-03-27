@@ -37,11 +37,11 @@ export interface ArtworkFilters {
 const splitAndSanitizeValues = (values: string[]): string[] => {
   // Create a Set to store unique values
   const uniqueValues = new Set<string>();
-  
+
   // Process each value
   values.forEach(value => {
     if (!value) return;
-    
+
     // Split by comma and process each part
     value.split(',').forEach(part => {
       // Clean up the part
@@ -51,13 +51,13 @@ const splitAndSanitizeValues = (values: string[]): string[] => {
         // Convert to sentence case
         .toLowerCase()
         .replace(/^\w/, c => c.toUpperCase());
-      
+
       if (cleaned) {
         uniqueValues.add(cleaned);
       }
     });
   });
-  
+
   // Convert Set back to sorted array
   return Array.from(uniqueValues).sort();
 };
@@ -130,7 +130,7 @@ export const fetchArtworks = async (filters: ArtworkFilters = {}): Promise<{
         query = query.order('year', { ascending: false });
         break;
       default:
-        //query = query.order('popularity', { ascending: false });
+      //query = query.order('popularity', { ascending: false });
     }
 
     // Apply pagination
@@ -230,31 +230,9 @@ export const fetchSimilarArtworks = async (
   limit = 4
 ): Promise<Artwork[]> => {
   try {
-    // First get the embedding for the source artwork
-    const { data: embeddingData, error: embeddingError } = await supabase
-      .from('artwork')
-      .select('embedding')
-      .eq('artwork_id', artwork.id)
-      .single();
+    // TODO call the server /api/similarArtworks
 
-    if (embeddingError || !embeddingData) {
-      throw new Error('Could not find embedding for artwork');
-    }
-
-    // Use the embedding to find similar artworks
-    const { data: similarArtworks, error: similarError } = await supabase
-      .rpc('match_artworks', {
-        query_embedding: embeddingData.embedding,
-        match_threshold: 0.2, // Adjust similarity threshold as needed
-        match_count: limit
-      })
-      .neq('id', artwork.id); // Exclude the source artwork
-
-    if (similarError) {
-      throw similarError;
-    }
-
-    return similarArtworks || [];
+    return [];
   } catch (error) {
     console.error('Error fetching similar artworks:', error);
     return [];

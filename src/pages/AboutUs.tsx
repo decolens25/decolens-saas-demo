@@ -35,13 +35,6 @@ const AboutUs: React.FC = () => {
           <li>Style preferences</li>
         </ul>
 
-        <h2 className="text-2xl font-serif font-bold mt-12 mb-4">Our Partners</h2>
-        <p className="text-muted-foreground mb-6">
-          We work with a curated selection of galleries to bring you a diverse
-          collection of high-quality artwork. All our partners are carefully vetted to ensure authenticity
-          and excellence in their offerings.
-        </p>
-
         <h2 className="text-2xl font-serif font-bold mt-12 mb-4">Our Team</h2>
         <p className="text-muted-foreground mb-6">
           DecoLens was founded by a technologist who share a passion for making art more accessible
