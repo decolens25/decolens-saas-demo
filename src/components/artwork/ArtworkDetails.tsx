@@ -67,11 +67,7 @@ const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
   };
 
   const handlePurchase = () => {
-    if (artwork.product_url) {
-      window.open(artwork.product_url, '_blank');
-    } else {
-      toast.success('Redirecting to purchase page...');
-    }
+    toast.success('This is a demo store!');
   };
 
   const handleToggleFavorite = () => {
@@ -189,20 +185,6 @@ const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
               >
                 Purchase Artwork
               </button>
-
-              <div className="bg-secondary/50 rounded-lg p-4 mt-4">
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 p-2 rounded-full">
-                    <Check className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-medium">DecoLens Verified Partner</p>
-                    <p className="text-sm text-muted-foreground">
-                      This artwork is sold by a verified gallery partner. Authenticity guaranteed.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
