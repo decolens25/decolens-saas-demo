@@ -25,7 +25,7 @@ const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ onStartScanner })
               transition={{ duration: 0.6 }}
             >
               <img
-                src="https://images.unsplash.com/photo-1581343109297-b0723170dc53?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?crop=entropy\u0026cs=tinysrgb\u0026fit=max\u0026fm=jpg\u0026ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mjl8fHJvb218ZW58MHx8fHwxNzQzMTI3MDk1fDI\u0026ixlib=rb-4.0.3\u0026q=80\u0026w=400"
                 alt="DecoLens app in action"
                 className="rounded-lg shadow-xl"
               />
@@ -36,7 +36,7 @@ const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ onStartScanner })
             <StepItem
               number={1}
               title="Scan Your Space"
-              description="Use our intuitive camera interface to capture your room from different angles. Our AI analyzes dimensions, lighting, color palette, and architectural elements."
+              description="Use our intuitive camera interface to capture your room from different angles. Our AI analyzes vibe, lighting, color palette, and architectural elements."
               delay={0.1}
             />
 
