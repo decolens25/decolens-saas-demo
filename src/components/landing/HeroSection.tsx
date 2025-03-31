@@ -99,15 +99,11 @@ const HeroSection: React.FC<HeroSectionProps> = () => {
           >
             <button
               onClick={startScanner}
-              className="btn btn-scanner btn-lg flex items-center justify-center gap-2"
+              className="btn btn-scanner btn-xl flex items-center justify-center gap-2"
             >
               <Camera className="h-5 w-5" />
               <span>Find Your Perfect Art</span>
             </button>
-
-            <Link to="/browse" className="btn btn-outline btn-lg bg-white/10 text-white border-white/20 hover:bg-white/20">
-              Browse Popular Pieces
-            </Link>
           </motion.div>
         </motion.div>
       </div>
