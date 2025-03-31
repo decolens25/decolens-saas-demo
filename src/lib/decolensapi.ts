@@ -39,11 +39,11 @@ export const decolensApi = {
   ): Promise<AbortController> {
     // Create a new AbortController
     const controller = new AbortController();
-    
+
     try {
       // Scale down the image to max 1024px in either dimension
       const scaledImageUrl = await scaleImageToMaxDimension(imageUrl, 1024);
-      
+
       // Convert the scaled image to a Blob
       let imageBlob: Blob;
       if (scaledImageUrl.startsWith('data:')) {
@@ -110,4 +110,59 @@ export const decolensApi = {
 
     return controller;
   },
+
+  // Call the server's /api/similarArtworks API
+  async fetchSimilarArtworks(
+    artworkId: string,
+    maxCount = 4
+  ): Promise<string[]> {
+    try {
+      const response = await fetch(`${serverUrl}/api/similarArtworks?artworkId=${artworkId}&maxCount=${maxCount}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.artworkIds || [];
+    } catch (error) {
+      console.error('Error fetching similar artworks:', error);
+      return [];
+    }
+  },
+
+  // Call the server's /api/search API
+  async searchArtworks(
+    query: string,
+    maxCount = 10
+  ): Promise<string[]> {
+    if (query.length < 3) return [];
+
+    try {
+      const response = await fetch(`${serverUrl}/api/search?query=${query}&maxCount=${maxCount}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.artworkIds || [];
+    } catch (error) {
+      console.error('Error searching artworks:', error);
+      return [];
+    }
+  },
+
 };

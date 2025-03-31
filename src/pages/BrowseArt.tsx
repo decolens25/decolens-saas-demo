@@ -214,7 +214,7 @@ const BrowseArt: React.FC = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <input
               type="text"
-              placeholder="Search by title, artist, or style..."
+              placeholder="Search by title, artist, or describe what you are looking for..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);

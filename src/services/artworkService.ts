@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import type { Database } from '../types/supabase';
+import { decolensApi } from '../lib/decolensapi';
 
 export interface Artwork {
   id: string;
@@ -92,9 +93,12 @@ export const fetchArtworks = async (filters: ArtworkFilters = {}): Promise<{
 
     // Apply filters
     if (searchQuery) {
-      query = query.or(
-        `title.ilike.%${searchQuery}%,artist.ilike.%${searchQuery}%`
-      );
+      // Call out to the server for natural language semantic search to augment simple text search.
+      const artworkIds = await decolensApi.searchArtworks(searchQuery, 20);
+      const dbClause = artworkIds.length > 0 ?
+        `title.ilike.%${searchQuery}%,artist.ilike.%${searchQuery}%,id.in.(${artworkIds.join(',')})` :
+        `title.ilike.%${searchQuery}%,artist.ilike.%${searchQuery}%`;
+      query = query.or(dbClause);
     }
 
     if (style && style !== 'All Styles') {
@@ -230,9 +234,9 @@ export const fetchSimilarArtworks = async (
   limit = 4
 ): Promise<Artwork[]> => {
   try {
-    // TODO call the server /api/similarArtworks
+    const artworkIds = await decolensApi.fetchSimilarArtworks(artwork.id, limit);
+    return await fetchArtworksByIds(artworkIds);
 
-    return [];
   } catch (error) {
     console.error('Error fetching similar artworks:', error);
     return [];
