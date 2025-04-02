@@ -1,7 +1,6 @@
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
-import type { Database } from '../types/supabase';
-import { decolensApi } from '../lib/decolensapi';
+import { decolensApi } from '../lib/decolens';
 
 export interface Artwork {
   id: string;
@@ -94,7 +93,7 @@ export const fetchArtworks = async (filters: ArtworkFilters = {}): Promise<{
     // Apply filters
     if (searchQuery) {
       // Call out to the server for natural language semantic search to augment simple text search.
-      const artworkIds = await decolensApi.searchArtworks(searchQuery, 20);
+      const { artworkIds } = await decolensApi.search(searchQuery, 20);
       const dbClause = artworkIds.length > 0 ?
         `title.ilike.%${searchQuery}%,artist.ilike.%${searchQuery}%,id.in.(${artworkIds.join(',')})` :
         `title.ilike.%${searchQuery}%,artist.ilike.%${searchQuery}%`;
@@ -234,7 +233,7 @@ export const fetchSimilarArtworks = async (
   limit = 4
 ): Promise<Artwork[]> => {
   try {
-    const artworkIds = await decolensApi.fetchSimilarArtworks(artwork.id, limit);
+    const { artworkIds } = await decolensApi.similarArtworks(artwork.id, limit);
     return await fetchArtworksByIds(artworkIds);
 
   } catch (error) {

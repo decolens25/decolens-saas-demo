@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Info } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { supabase } from '../../lib/supabase';
+import { Style } from '@decolens/decolens-sdk';
 
 interface PriceHistogramData {
   bucket: number;
@@ -10,31 +11,31 @@ interface PriceHistogramData {
 
 interface RecommendationPreferencesProps {
   onSubmit: (preferences: {
-    vibes: string[];
+    styles: string[];
     priceRange: [number, number];
   }) => void;
   onCancel: () => void;
   isPro?: boolean;
   initialPriceRange?: [number, number];
-  initialVibes?: string[];
+  initialStyles?: string[];
 }
 
-const vibeOptions = [
-  { id: 'minimalist', label: 'Minimalist', description: 'Clean lines and simple forms' },
-  { id: 'modern', label: 'Modern', description: 'Contemporary and sleek' },
-  { id: 'traditional', label: 'Traditional', description: 'Classic and timeless' },
-  { id: 'eclectic', label: 'Eclectic', description: 'Mixed styles and unique combinations' },
-  { id: 'bohemian', label: 'Bohemian', description: 'Free-spirited and artistic' },
-  { id: 'industrial', label: 'Industrial', description: 'Raw and urban feel' },
-  { id: 'coastal', label: 'Coastal', description: 'Beach-inspired and relaxed' },
-  { id: 'scandinavian', label: 'Scandinavian', description: 'Light and functional' },
-  { id: 'rustic', label: 'Rustic', description: 'Natural and weathered' },
-  { id: 'mid-century', label: 'Mid-Century', description: 'Retro and geometric' },
-  { id: 'art-deco', label: 'Art Deco', description: 'Glamorous and bold' },
-  { id: 'tropical', label: 'Tropical', description: 'Vibrant and exotic' },
-  { id: 'zen', label: 'Zen', description: 'Peaceful and balanced' },
-  { id: 'farmhouse', label: 'Farmhouse', description: 'Cozy and vintage' },
-  { id: 'mediterranean', label: 'Mediterranean', description: 'Warm and textured' }
+const styleOptions = [
+  { id: Style.Minimalist, label: 'Minimalist', description: 'Clean lines and simple forms' },
+  { id: Style.Modern, label: 'Modern', description: 'Contemporary and sleek' },
+  { id: Style.Traditional, label: 'Traditional', description: 'Classic and timeless' },
+  { id: Style.Eclectic, label: 'Eclectic', description: 'Mixed styles and unique combinations' },
+  { id: Style.Bohemian, label: 'Bohemian', description: 'Free-spirited and artistic' },
+  { id: Style.Industrial, label: 'Industrial', description: 'Raw and urban feel' },
+  { id: Style.Coastal, label: 'Coastal', description: 'Beach-inspired and relaxed' },
+  { id: Style.Scandinavian, label: 'Scandinavian', description: 'Light and functional' },
+  { id: Style.Rustic, label: 'Rustic', description: 'Natural and weathered' },
+  { id: Style.MidCenturyModern, label: 'Mid-Century', description: 'Retro and geometric' },
+  { id: Style.ArtDeco, label: 'Art Deco', description: 'Glamorous and bold' },
+  { id: Style.Tropical, label: 'Tropical', description: 'Vibrant and exotic' },
+  { id: Style.Zen, label: 'Zen', description: 'Peaceful and balanced' },
+  { id: Style.Farmhouse, label: 'Farmhouse', description: 'Cozy and vintage' },
+  { id: Style.Mediterranean, label: 'Mediterranean', description: 'Warm and textured' }
 ];
 
 const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
@@ -42,9 +43,9 @@ const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
   onCancel,
   isPro = false,
   initialPriceRange,
-  initialVibes = []
+  initialStyles = []
 }) => {
-  const [selectedVibes, setSelectedVibes] = useState<string[]>(initialVibes);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(initialStyles);
   const [priceRange, setPriceRange] = useState<[number, number]>(initialPriceRange || [0, 5000]);
   const [histogramData, setHistogramData] = useState<PriceHistogramData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,20 +75,20 @@ const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
   }, []);
 
   useEffect(() => {
-    console.log("Updated preferences:", { vibes: selectedVibes, priceRange });
-  }, [selectedVibes, priceRange]);
+    console.log("Updated preferences:", { styles: selectedStyles, priceRange });
+  }, [selectedStyles, priceRange]);
 
-  const toggleVibe = (vibeId: string) => {
+  const toggleStyle = (styleId: string) => {
     if (!isPro) return;
 
-    setSelectedVibes(prev => {
-      if (prev.includes(vibeId)) {
-        return prev.filter(v => v !== vibeId);
+    setSelectedStyles(prev => {
+      if (prev.includes(styleId)) {
+        return prev.filter(v => v !== styleId);
       }
       if (prev.length >= 2) {
-        return [prev[1], vibeId];
+        return [prev[1], styleId];
       }
-      return [...prev, vibeId];
+      return [...prev, styleId];
     });
   };
 
@@ -165,7 +166,7 @@ const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
 
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h4 className="font-medium">Preferred Vibes</h4>
+          <h4 className="font-medium">Preferred Styles</h4>
           {!isPro && (
             <div className="flex items-center gap-1 text-sm text-primary">
               <Info className="h-4 w-4" />
@@ -175,29 +176,29 @@ const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {vibeOptions.map((vibe) => (
+          {styleOptions.map((style) => (
             <button
-              key={vibe.id}
-              onClick={() => toggleVibe(vibe.id)}
+              key={style.id}
+              onClick={() => toggleStyle(style.id)}
               disabled={!isPro}
               className={cn(
                 "p-3 rounded-lg text-left transition-colors",
-                selectedVibes.includes(vibe.id)
+                selectedStyles.includes(style.id)
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary hover:bg-secondary/80",
                 !isPro && "opacity-50 cursor-not-allowed hover:bg-secondary"
               )}
             >
-              <div className="font-medium text-sm">{vibe.label}</div>
-              <div className="text-xs opacity-80">{vibe.description}</div>
+              <div className="font-medium text-sm">{style.label}</div>
+              <div className="text-xs opacity-80">{style.description}</div>
             </button>
           ))}
         </div>
 
-        {selectedVibes.length > 0 && (
+        {selectedStyles.length > 0 && (
           <p className="text-xs text-muted-foreground mt-2">
-            Selected: {selectedVibes.map(id =>
-              vibeOptions.find(v => v.id === id)?.label
+            Selected: {selectedStyles.map(id =>
+              styleOptions.find(v => v.id === id)?.label
             ).join(', ')}
           </p>
         )}
@@ -212,7 +213,7 @@ const RecommendationPreferences: React.FC<RecommendationPreferencesProps> = ({
         </button>
         <button
           onClick={() => onSubmit({
-            vibes: selectedVibes,
+            styles: selectedStyles,
             priceRange: priceRange
           })}
           className="btn btn-primary"

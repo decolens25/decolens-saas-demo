@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Sliders, ChevronDown } from 'lucide-react';
-import { AnalysisResponse } from '../../lib/decolensapi';
+import { AnalysisResponse } from '@decolens/decolens-sdk';
 import RoomAnalysisCard from './RoomAnalysisCard';
 import ArtworkCard from '../artwork/ArtworkCard';
 import RecommendationPreferences from './RecommendationPreferences';
@@ -17,7 +17,7 @@ interface AnalysisResultsProps {
   favorites: string[];
   isAnalyzing?: boolean;
   progress?: number;
-  onUpdateRecommendations?: (preferences: { vibes: string[]; priceRange: [number, number] }) => void;
+  onUpdateRecommendations?: (preferences: { styles: string[]; priceRange: [number, number] }) => void;
 }
 
 const AnalysisResults: React.FC<AnalysisResultsProps> = ({
@@ -37,7 +37,7 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
   }[]>(null);
   const [showPreferences, setShowPreferences] = useState(false);
   const [currentPriceRange, setCurrentPriceRange] = useState<[number, number] | undefined>();
-  const [selectedVibes, setSelectedVibes] = useState<string[]>([]);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
   useEffect(() => {
     const loadArtworks = async () => {
@@ -63,8 +63,8 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
     loadArtworks();
   }, [analysisResponse?.recommendations]);
 
-  const handlePreferencesSubmit = (preferences: { vibes: string[]; priceRange: [number, number] }) => {
-    setSelectedVibes(preferences.vibes);
+  const handlePreferencesSubmit = (preferences: { styles: string[]; priceRange: [number, number] }) => {
+    setSelectedStyles(preferences.styles);
     setCurrentPriceRange(preferences.priceRange);
     setShowPreferences(false);
 
@@ -177,7 +177,7 @@ const AnalysisResults: React.FC<AnalysisResultsProps> = ({
                         onCancel={() => setShowPreferences(false)}
                         isPro={true}
                         initialPriceRange={currentPriceRange}
-                        initialVibes={selectedVibes}
+                        initialStyles={selectedStyles}
                       />
                     </div>
                   </motion.div>

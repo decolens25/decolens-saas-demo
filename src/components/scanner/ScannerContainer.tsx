@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { decolensApi, AnalysisResponse, Preferences } from '../../lib/decolensapi';
+import { decolensApi } from '../../lib/decolens';
+import { AnalysisResponse, Preferences, Style } from '@decolens/decolens-sdk';
 import toast from 'react-hot-toast';
 
 // Components
@@ -149,7 +150,7 @@ const ScannerContainer: React.FC<ScannerContainerProps> = ({
     setScannerState(ScannerState.DETAILS);
   };
 
-  const onUpdateRecommendations = (prefs: { vibes: string[]; priceRange: [number, number] }) => {
+  const onUpdateRecommendations = (prefs: { styles: Style[]; priceRange: [number, number] }) => {
     setPreferences(prefs);
     runAnalysis(prefs);
   };

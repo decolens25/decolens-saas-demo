@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AnalysisResponse } from '../../lib/decolensapi';
+import { AnalysisResponse } from '@decolens/decolens-sdk';
 
 interface AnalyzingViewProps {
   capturedImage: string | null;
@@ -8,13 +8,13 @@ interface AnalyzingViewProps {
   analysisResponse?: AnalysisResponse | null;
 }
 
-const AnalyzingView: React.FC<AnalyzingViewProps> = ({ 
-  capturedImage, 
+const AnalyzingView: React.FC<AnalyzingViewProps> = ({
+  capturedImage,
   progress = 0,
   analysisResponse
 }) => {
   const [analysisStage, setAnalysisStage] = useState(0);
-  
+
   const analysisStages = [
     "Detecting room dimensions...",
     "Analyzing lighting conditions...",
@@ -23,7 +23,7 @@ const AnalyzingView: React.FC<AnalyzingViewProps> = ({
     "Matching with art database...",
     "Generating recommendations..."
   ];
-  
+
   useEffect(() => {
     // Update analysis stage based on progress
     if (progress < 15) setAnalysisStage(0);
@@ -33,7 +33,7 @@ const AnalyzingView: React.FC<AnalyzingViewProps> = ({
     else if (progress < 80) setAnalysisStage(4);
     else setAnalysisStage(5);
   }, [progress]);
-  
+
   return (
     <div className="flex flex-col items-center">
       <div className="relative w-full max-w-3xl aspect-[4/3] bg-black rounded-lg overflow-hidden mb-6">
@@ -44,7 +44,7 @@ const AnalyzingView: React.FC<AnalyzingViewProps> = ({
             className="w-full h-full object-cover"
           />
         )}
-        
+
         <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center">
           <div className="relative w-20 h-20">
             <motion.div
@@ -61,14 +61,14 @@ const AnalyzingView: React.FC<AnalyzingViewProps> = ({
             />
           </div>
           <p className="text-white/70 text-sm mt-2">{progress}%</p>
-          
+
           {/* Show partial analysis results if available */}
           {analysisResponse && (
             <div className="mt-6 w-full max-w-md px-4">
               <div className="bg-white/10 rounded-lg p-3 text-white/90 text-sm">
                 <p className="font-medium mb-1">AI Analysis:</p>
                 <p className="text-xs text-white/80">{analysisResponse.eval}</p>
-                
+
                 {analysisResponse.recommendations && analysisResponse.recommendations.length > 0 && (
                   <div className="mt-2">
                     <p className="text-xs font-medium text-white/90">Finding matches for:</p>
@@ -84,7 +84,7 @@ const AnalyzingView: React.FC<AnalyzingViewProps> = ({
           )}
         </div>
       </div>
-      
+
       <div className="max-w-md text-center">
         <h3 className="text-lg font-medium mb-2">AI Analysis in Progress</h3>
         <p className="text-muted-foreground">

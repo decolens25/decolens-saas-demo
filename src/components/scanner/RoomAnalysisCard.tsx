@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RefreshCw, Download, Share2 } from 'lucide-react';
-import { AnalysisResponse } from '../../lib/decolensapi';
-import toast from 'react-hot-toast';
+import { AnalysisResponse } from '@decolens/decolens-sdk';
 
 interface RoomAnalysisCardProps {
   capturedImage: string | null;
@@ -31,7 +29,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
             />
           )}
         </div>
-        
+
         {isAnalyzing && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="text-center text-white">
@@ -48,7 +46,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
           </div>
         )}
       </div>
-      
+
       <div className="p-4 border-t">
         <div className="space-y-3 text-sm">
           <div>
@@ -59,7 +57,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
               analysisResponse?.purpose || 'Not analyzed'
             )}
           </div>
-          
+
           <div>
             <span className="text-muted-foreground">Ambiance:</span>{' '}
             {isAnalyzing && !analysisResponse?.ambiance ? (
@@ -68,7 +66,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
               analysisResponse?.ambiance || 'Not analyzed'
             )}
           </div>
-          
+
           <div>
             <span className="text-muted-foreground">Lighting:</span>{' '}
             {isAnalyzing && !analysisResponse?.lighting ? (
@@ -77,7 +75,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
               analysisResponse?.lighting || 'Not analyzed'
             )}
           </div>
-          
+
           <div>
             <span className="text-muted-foreground">Materials:</span>{' '}
             {isAnalyzing && !analysisResponse?.materials ? (
@@ -86,7 +84,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
               analysisResponse?.materials || 'Not analyzed'
             )}
           </div>
-          
+
           <div>
             <span className="text-muted-foreground">Color Palette:</span>
             <div className="flex gap-2 mt-1">
@@ -113,7 +111,7 @@ const RoomAnalysisCard: React.FC<RoomAnalysisCardProps> = ({
               )}
             </div>
           </div>
-          
+
           {analysisResponse?.summary && (
             <div>
               <span className="text-muted-foreground">Summary:</span>
